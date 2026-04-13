@@ -30,7 +30,7 @@ func detectMimeType(filePath string) string {
 	} else if strings.HasSuffix(filePath, ".woff2") {
 		return "font/woff2"
 	}
-	return "application/octet-stream"
+	return "text/html; charset=utf-8"
 }
 
 func Serve(next echo.HandlerFunc) echo.HandlerFunc {
