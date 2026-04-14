@@ -67,6 +67,13 @@ const PackRangeViewer = () => {
     new Date().toISOString().split("T")[0],
   );
 
+  if (localStorage.getItem("startDate")) {
+    setStartDate(localStorage.getItem("startDate")!);
+  }
+  if (localStorage.getItem("endDate")) {
+    setEndDate(localStorage.getItem("endDate")!);
+  }
+
   const [startInputOk, setStartInputOk] = createSignal<boolean>(true);
   const [endInputOk, setEndInputOk] = createSignal<boolean>(true);
 
@@ -111,6 +118,7 @@ const PackRangeViewer = () => {
           if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
             setStartInputOk(true);
             setStartDate(value);
+            localStorage.setItem("startDate", value);
             refreshPacklogs();
           } else {
             setStartInputOk(false);
@@ -130,6 +138,7 @@ const PackRangeViewer = () => {
           if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
             setEndInputOk(true);
             setEndDate(value);
+            localStorage.setItem("endDate", value);
             refreshPacklogs();
           } else {
             setEndInputOk(false);
