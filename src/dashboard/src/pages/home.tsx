@@ -83,6 +83,17 @@ const PackRangeViewer = () => {
     }
   });
 
+  const refreshPacklogs = () => {
+    if (startInputOk() && endInputOk()) {
+      getPacklogsBetween(startDate(), endDate())
+        .then((data) => setPacklogs(data))
+        .catch((error) => {
+          console.error("Failed to fetch packlogs:", error);
+          setPacklogs([]);
+        });
+    }
+  };
+
   return (
     <div class="mt-8 bg-zinc-800 p-4 rounded">
       <h2 class="text-2xl font-bold mb-4">Pack Range Viewer</h2>
@@ -100,6 +111,7 @@ const PackRangeViewer = () => {
           if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
             setStartInputOk(true);
             setStartDate(value);
+            refreshPacklogs();
           } else {
             setStartInputOk(false);
           }
@@ -118,6 +130,7 @@ const PackRangeViewer = () => {
           if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
             setEndInputOk(true);
             setEndDate(value);
+            refreshPacklogs();
           } else {
             setEndInputOk(false);
           }
