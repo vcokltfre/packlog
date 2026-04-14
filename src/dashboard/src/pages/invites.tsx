@@ -1,5 +1,6 @@
 import { createEffect, createSignal, For, Show } from "solid-js";
 import { createInvite, deleteInvite, getInvites } from "../api";
+import QRCode from "qrcode";
 
 type InviteProps = {
   code: string;
@@ -15,27 +16,62 @@ const Invite = (props: InviteProps) => {
     });
   };
 
+  const [qrReady, setQrReady] = createSignal(false);
+
+  const generateQrCode = () => {
+    const url = `${window.location.origin}/signup?code=${props.code}`;
+    const canvas = document.getElementById(
+      "qr-" + props.code,
+    ) as HTMLCanvasElement | null;
+
+    if (canvas) {
+      QRCode.toCanvas(canvas, url, { width: 200 }, (error) => {
+        if (error) {
+          console.error("Failed to generate QR code:", error);
+          setQrReady(false);
+        } else {
+          setQrReady(true);
+        }
+      });
+    }
+  };
+
   return (
-    <div class="bg-zinc-800 p-4 rounded mb-2 flex items-center justify-between">
-      <div>
-        <p class="text-lg font-bold">{props.code}</p>
-        <p class="text-sm text-zinc-400">Invite for {props.username}</p>
+    <div class="mb-4">
+      <div class="bg-zinc-800 p-4 rounded mb-2 flex items-center">
+        <div>
+          <p class="text-lg font-bold">{props.code}</p>
+          <p class="text-sm text-zinc-400">Invite for {props.username}</p>
+        </div>
+        <div class="grow"></div>
+        <button
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
+          onclick={copyCodeUrl}
+        >
+          Copy
+        </button>
+        <button
+          class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          onClick={() => {
+            deleteInvite(props.code);
+            setTimeout(props.refresh, 500);
+          }}
+        >
+          Revoke
+        </button>
+        <button
+          onclick={generateQrCode}
+          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 ml-2"
+        >
+          Show QR
+        </button>
       </div>
-      <button
-        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
-        onclick={copyCodeUrl}
-      >
-        Copy
-      </button>
-      <button
-        class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
-        onClick={() => {
-          deleteInvite(props.code);
-          setTimeout(props.refresh, 500);
+      <canvas
+        id={"qr-" + props.code}
+        classList={{
+          hidden: !qrReady(),
         }}
-      >
-        Revoke
-      </button>
+      ></canvas>
     </div>
   );
 };
