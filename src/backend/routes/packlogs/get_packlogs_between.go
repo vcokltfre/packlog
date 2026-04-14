@@ -1,6 +1,7 @@
 package packlogs
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -8,6 +9,10 @@ import (
 	"github.com/vcokltfre/packlog/src/backend/data"
 	"github.com/vcokltfre/packlog/src/backend/data/database"
 )
+
+func itoa(i int) string {
+	return fmt.Sprintf("%d", i)
+}
 
 func getPacklogsBetween(c echo.Context) error {
 	from, err := data.ParsePacklogDate(c.Param("from"))
@@ -48,6 +53,17 @@ func getPacklogsBetween(c echo.Context) error {
 			PinkTicket: int(pl.PinkTicketCount),
 			KitHire:    int(pl.KitHireCount),
 		}
+	}
+
+	if c.QueryParam("csv") == "true" {
+		c.Response().Header().Set(echo.HeaderContentType, "text/csv")
+
+		csvData := "Date,Tandems,Instructor,BlueTicket,PinkTicket,KitHire\n"
+		for _, pl := range response {
+			csvData += pl.Date + "," + itoa(pl.Tandems) + "," + itoa(pl.Instructor) + "," + itoa(pl.BlueTicket) + "," + itoa(pl.PinkTicket) + "," + itoa(pl.KitHire) + "\n"
+		}
+
+		return c.String(200, csvData)
 	}
 
 	return c.JSON(200, response)

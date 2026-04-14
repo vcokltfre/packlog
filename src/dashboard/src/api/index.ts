@@ -64,6 +64,17 @@ export async function getPacklogsBetween(
   return await resp.json();
 }
 
+export async function getPacklogsBetweenCSV(
+  startDate: string,
+  endDate: string,
+): Promise<string> {
+  const resp = await request(
+    "GET",
+    `/packlogs/between/${startDate}/${endDate}?csv=true`,
+  );
+  return await resp.text();
+}
+
 export async function setPacklog(
   date: string,
   packlog: Packlog,

@@ -1,5 +1,11 @@
 import { createEffect, createSignal } from "solid-js";
-import { getPacklog, getPacklogsBetween, getSelf, Packlog } from "../api";
+import {
+  getPacklog,
+  getPacklogsBetween,
+  getPacklogsBetweenCSV,
+  getSelf,
+  Packlog,
+} from "../api";
 import Editor, { PacklogCounters, PacklogStats } from "../editor";
 
 const PackEditor = () => {
@@ -149,6 +155,28 @@ const PackRangeViewer = () => {
       />
       <PacklogsCounter packlogs={packlogs()} />
       <PacklogStats packlog={condensePacklogs(packlogs())} />
+      <button
+        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        onClick={() => {
+          getPacklogsBetweenCSV(startDate(), endDate())
+            .then((csvData) => {
+              const blob = new Blob([csvData], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `packlogs_${startDate()}_to_${endDate()}.csv`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+              console.error("Failed to fetch CSV data:", error);
+            });
+        }}
+      >
+        Export CSV
+      </button>
     </div>
   );
 };
