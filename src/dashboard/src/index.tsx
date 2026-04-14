@@ -28,8 +28,8 @@ render(
           <Route path="/" component={AuthGuard}>
             <Route path="/" component={HomePage} />
             <Route path="/invites" component={InvitesPage} />
-            <Route path="/signup" component={SignupPage} />
           </Route>
+          <Route path="/signup" component={SignupPage} />
           <Route path="/login" component={LoginPage} />
         </Router>
       </main>
