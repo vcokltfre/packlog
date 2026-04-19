@@ -26,6 +26,19 @@ func acceptInvite(c echo.Context) error {
 		return c.JSON(400, map[string]string{"error": "Invalid invite code"})
 	}
 
+	u, err := db.GetUserByUsername(c.Request().Context(), invite.Username)
+	if err == nil {
+		if err := am.UpdatePassword(c.Request().Context(), u.Username, req.Password); err != nil {
+			return c.JSON(500, map[string]string{"error": "Failed to update password"})
+		}
+
+		if err := db.DeleteInvite(c.Request().Context(), code); err != nil {
+			return c.JSON(500, map[string]string{"error": "Failed to delete invite"})
+		}
+
+		return c.NoContent(204)
+	}
+
 	if err := am.CreateUser(c.Request().Context(), invite.Username, req.Password); err != nil {
 		return c.JSON(500, map[string]string{"error": "Failed to create user"})
 	}

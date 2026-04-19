@@ -1,6 +1,9 @@
 -- name: CreateUser :exec
 INSERT INTO users (username, password) VALUES ($1, $2);
 
+-- name: UpdatePassword :exec
+UPDATE users SET password = $2 WHERE username = $1;
+
 -- name: GrantAdmin :exec
 UPDATE users SET admin = TRUE WHERE username = $1;
 

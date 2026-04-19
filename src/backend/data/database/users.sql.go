@@ -147,3 +147,17 @@ func (q *Queries) RevokeAdmin(ctx context.Context, username string) error {
 	_, err := q.db.Exec(ctx, revokeAdmin, username)
 	return err
 }
+
+const updatePassword = `-- name: UpdatePassword :exec
+UPDATE users SET password = $2 WHERE username = $1
+`
+
+type UpdatePasswordParams struct {
+	Username string
+	Password string
+}
+
+func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) error {
+	_, err := q.db.Exec(ctx, updatePassword, arg.Username, arg.Password)
+	return err
+}
