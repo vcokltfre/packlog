@@ -22,7 +22,9 @@ render(
   () => (
     <>
       <nav class="bg-zinc-800 p-4 mb-6 flex items-center">
-        <h1 class="text-2xl font-bold text-white">Packlog</h1>
+        <a href="/" class="text-2xl font-bold text-white">
+          Packlog
+        </a>
         <div class="grow"></div>
         <a href="/settings" class="text-white hover:text-gray-400 mx-2">
           Settings
