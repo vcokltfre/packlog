@@ -8,6 +8,7 @@ import LoginPage from "./pages/login";
 import HomePage from "./pages/home";
 import InvitesPage from "./pages/invites";
 import SignupPage from "./pages/signup";
+import SettingsPage from "./pages/settings";
 
 const root = document.getElementById("root");
 
@@ -22,12 +23,17 @@ render(
     <>
       <nav class="bg-zinc-800 p-4 mb-6 flex items-center">
         <h1 class="text-2xl font-bold text-white">Packlog</h1>
+        <div class="grow"></div>
+        <a href="/settings" class="text-white hover:text-gray-400 mx-2">
+          Settings
+        </a>
       </nav>
       <main class="px-4 lg:px-[20%]">
         <Router>
           <Route path="/" component={AuthGuard}>
             <Route path="/" component={HomePage} />
             <Route path="/invites" component={InvitesPage} />
+            <Route path="/settings" component={SettingsPage} />
           </Route>
           <Route path="/signup" component={SignupPage} />
           <Route path="/login" component={LoginPage} />

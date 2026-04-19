@@ -54,6 +54,8 @@ export const PacklogCounters = (props: {
   disabled?: boolean;
   display?: boolean;
 }) => {
+  const hidePinkTickets = localStorage.getItem("hidePinkTickets") === "true";
+
   return (
     <div>
       <PacklogCounter
@@ -92,15 +94,17 @@ export const PacklogCounters = (props: {
         disabled={props.disabled}
         display={props.display}
       />
-      <PacklogCounter
-        name="Pink Tickets"
-        value={props.packlog.pink_ticket}
-        onChange={(newValue) =>
-          props.onChange({ ...props.packlog, pink_ticket: newValue })
-        }
-        disabled={props.disabled}
-        display={props.display}
-      />
+      <Show when={!hidePinkTickets}>
+        <PacklogCounter
+          name="Pink Tickets"
+          value={props.packlog.pink_ticket}
+          onChange={(newValue) =>
+            props.onChange({ ...props.packlog, pink_ticket: newValue })
+          }
+          disabled={props.disabled}
+          display={props.display}
+        />
+      </Show>
     </div>
   );
 };
