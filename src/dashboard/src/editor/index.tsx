@@ -1,6 +1,9 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { getPacklog, Packlog, setPacklog as setPacklogCall } from "../api";
 
+import { AiFillMinusCircle } from "solid-icons/ai";
+import { AiFillPlusCircle } from "solid-icons/ai";
+
 type PacklogCounterProps = {
   name: string;
   value: number;
@@ -15,20 +18,39 @@ const PacklogCounter = (props: PacklogCounterProps) => {
 
   return (
     <div class="flex items-center space-x-2 mb-2">
-      <h2 class="text-2xl">{props.name}</h2>
+      <div>
+        <h2 class="text-2xl">{props.name}</h2>
+        <h3 class="text-gray-500">
+          <span class="text-xs">£</span>
+          <span class="text-md">
+            {(() => {
+              switch (props.name) {
+                case "Tandems":
+                  return (props.value * 11).toFixed(2);
+                case "Instructor":
+                case "Blue Tickets":
+                case "Kit Hire":
+                  return (props.value * 6.5).toFixed(2);
+                default:
+                  return "0.00";
+              }
+            })()}
+          </span>
+        </h3>
+      </div>
       <div class="grow"></div>
       <Show when={!display}>
         <button
-          class="w-12 h-12 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 disabled:bg-red-300 disabled:cursor-not-allowed"
+          class="p-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 group"
           onClick={() => props.onChange(props.value - 1)}
           disabled={disabled || props.value <= 0}
         >
-          -
+          <AiFillMinusCircle class="text-blue-500 bg-white rounded-full h-8 w-8 transition-colors group-hover:text-blue-600" />
         </button>
       </Show>
       <input
         type="text"
-        class="w-16 h-12 text-center bg-zinc-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-zinc-600 disabled:cursor-not-allowed"
+        class="text-center w-12 rounded cursor-text disabled:cursor-not-allowed"
         value={props.value}
         onInput={(e) => {
           props.onChange(parseInt(e.currentTarget.value) || 0);
@@ -37,11 +59,11 @@ const PacklogCounter = (props: PacklogCounterProps) => {
       />
       <Show when={!display}>
         <button
-          class="w-12 h-12 px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 disabled:bg-green-300 disabled:cursor-not-allowed"
+          class="p-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 group"
           onClick={() => props.onChange(props.value + 1)}
           disabled={disabled}
         >
-          +
+          <AiFillPlusCircle class="text-blue-500 bg-white rounded-full h-8 w-8 transition-colors group-hover:text-blue-600" />
         </button>
       </Show>
     </div>

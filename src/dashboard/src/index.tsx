@@ -21,9 +21,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(
   () => (
     <>
-      <nav class="bg-zinc-800 p-4 mb-6 flex items-center">
+      <nav class="p-4 lg:px-[20%] mb-6 flex items-center">
         <a href="/" class="text-2xl font-bold text-white">
-          Packlog
+          🪂 Packlog
         </a>
         <div class="grow"></div>
         <a href="/settings" class="text-white hover:text-gray-400 mx-2">

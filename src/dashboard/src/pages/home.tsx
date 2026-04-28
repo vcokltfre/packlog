@@ -16,7 +16,7 @@ const PackEditor = () => {
   const [inputOk, setInputOk] = createSignal<boolean>(true);
 
   return (
-    <div class="mt-8 bg-zinc-800 p-4 rounded">
+    <div class="mt-8 panel-bg p-4 rounded">
       <h2 class="text-2xl font-bold mb-4">Pack Editor</h2>
       <p class="mb-2 text-zinc-400 text-sm">
         Dates must be in the YYYY-MM-DD format.
@@ -108,7 +108,7 @@ const PackRangeViewer = () => {
   };
 
   return (
-    <div class="mt-8 bg-zinc-800 p-4 rounded">
+    <div class="mt-8 panel-bg p-4 rounded">
       <h2 class="text-2xl font-bold mb-4">Pack Range Viewer</h2>
       <p class="mb-2 text-zinc-400 text-sm">
         Dates must be in the YYYY-MM-DD format.

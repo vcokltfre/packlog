@@ -1,1 +1,15 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+.main-bg {
+  background: linear-gradient(225deg, #192433, #17171f);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.panel-bg {
+  background: linear-gradient(45deg, #1e293b, #1e293b);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
